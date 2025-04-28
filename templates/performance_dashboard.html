@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block extra_head %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 30px auto;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="jumbotron text-center bg-dark text-white">
+  <h1 class="display-4">Admin Performance Dashboard</h1>
+  <p class="lead">Visualize key performance metrics for quizzes and user engagement.</p>
+</div>
+
+<div class="container">
+  <div class="chart-container">
+    <h3>Quiz Performance Trends</h3>
+    <canvas id="quizPerformanceChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Category/Subject Analysis (Average Score per Subject)</h3>
+    <canvas id="subjectAnalysisChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>User Participation Metrics (Quiz Attempts per Subject)</h3>
+    <canvas id="participationChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Leaderboard (User Points)</h3>
+    <canvas id="leaderboardChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Quiz Completion Time</h3>
+    <canvas id="completionTimeChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Question Difficulty Analysis</h3>
+    <canvas id="difficultyChart"></canvas>
+  </div>
+</div>
+
+<script>
+  // Quiz Performance Trends (Line Chart)
+  var ctx1 = document.getElementById('quizPerformanceChart').getContext('2d');
+  var quizPerformanceChart = new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: {{ daily_labels|tojson }},
+      datasets: [{
+        label: 'Average Score',
+        data: {{ daily_avg|tojson }},
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Category/Subject Analysis (Bar Chart)
+  var ctx2 = document.getElementById('subjectAnalysisChart').getContext('2d');
+  var subjectAnalysisChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: {{ subject_labels|tojson }},
+      datasets: [{
+        label: 'Average Score',
+        data: {{ subject_avg|tojson }},
+        backgroundColor: 'rgba(153, 102, 255, 0.6)'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // User Participation Metrics (Bar Chart)
+  var ctx3 = document.getElementById('participationChart').getContext('2d');
+  var participationChart = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: {{ subject_labels|tojson }},
+      datasets: [{
+        label: 'Quiz Attempts',
+        data: {{ subject_attempts|tojson }},
+        backgroundColor: 'rgba(255, 159, 64, 0.6)'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Leaderboard (Bar Chart)
+  var ctx4 = document.getElementById('leaderboardChart').getContext('2d');
+  var leaderboardChart = new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: {{ leaderboard_names|tojson }},
+      datasets: [{
+        label: 'User Points',
+        data: {{ leaderboard_points|tojson }},
+        backgroundColor: 'rgba(255, 99, 132, 0.6)'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Quiz Completion Time (Line Chart)
+  var ctx5 = document.getElementById('completionTimeChart').getContext('2d');
+  var completionTimeChart = new Chart(ctx5, {
+    type: 'line',
+    data: {
+      labels: {{ quiz_completion_labels|tojson }},
+      datasets: [{
+        label: 'Average Completion Time (seconds)',
+        data: {{ quiz_completion_times|tojson }},
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Question Difficulty Analysis (Bar Chart)
+  var ctx6 = document.getElementById('difficultyChart').getContext('2d');
+  var difficultyChart = new Chart(ctx6, {
+    type: 'bar',
+    data: {
+      labels: {{ question_difficulty_labels|tojson }},
+      datasets: [{
+        label: 'Percentage Incorrect',
+        data: {{ question_difficulty_data|tojson }},
+        backgroundColor: 'rgba(255, 206, 86, 0.6)'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true, max: 100 }
+      }
+    }
+  });
+</script>
+{% endblock %}

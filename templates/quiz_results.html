@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Quiz Results for Quiz {{ quiz.id }}</h2>
+{% for question in quiz.questions %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5>{{ question.question_statement }}</h5>
+      <p><strong>Correct Answer:</strong> {{ getattr(question, question.correct_option) }}</p>
+      {% if question.explanation %}
+      <p><strong>Explanation:</strong> {{ question.explanation }}</p>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+<a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

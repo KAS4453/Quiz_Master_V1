@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>User Credentials and Activities</h2>
+  {% if users %}
+    {% for user in users %}
+      <div class="card mb-3">
+        <div class="card-header">
+          <strong>{{ user.full_name }}</strong> ({{ user.username }})
+        </div>
+        <div class="card-body">
+          <p><strong>Qualification:</strong> {{ user.qualification }}</p>
+          <p><strong>Date of Birth:</strong> {{ user.dob }}</p>
+          <h5>Quiz Attempts</h5>
+          {% if user.scores %}
+            <table class="table table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Quiz ID</th>
+                  <th>Total Score</th>
+                  <th>Attempt Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for score in user.scores %}
+                  <tr>
+                    <td>{{ score.quiz_id }}</td>
+                    <td>{{ score.total_scored }}</td>
+                    <td>{{ score.time_stamp_of_attempt.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p>No quiz attempts recorded.</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No users found.</p>
+  {% endif %}
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

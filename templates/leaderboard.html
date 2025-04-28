@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron text-center bg-dark text-white">
+  <h1 class="display-4">Leaderboard</h1>
+  <p class="lead">The leaderboard shows the sum of the best scores from each quiz attempt.</p>
+</div>
+
+<div class="container">
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Rank</th>
+        <th>User</th>
+        <th>Total Points</th>
+      </tr>
+    </thead>
+    <tbody class = "text-center bg-dark text-white">
+      {% for entry in leaderboard_data %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ entry.full_name }}</td>
+        <td>{{ entry.total_points }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}

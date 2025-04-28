@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block extra_head %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 400px;
+      width: 100%;
+      max-width: 800px;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="jumbotron text-center bg-secondary text-white">
+  <h1 class="display-4">Your Performance</h1>
+  <p class="lead">Review your quiz scores over time.</p>
+</div>
+
+<div class="container">
+  <div class="chart-container">
+    <canvas id="performanceChart"></canvas>
+  </div>
+  <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+
+<script>
+  var labels = {{ labels|tojson }};
+  var scoresData = {{ data|tojson }};
+
+  var ctx = document.getElementById('performanceChart').getContext('2d');
+  var performanceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Quiz Scores',
+              data: scoresData,
+              backgroundColor: 'rgba(54, 162, 235, 0.4)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3
+          }]
+      },
+      options: {
+          scales: {
+              x: {
+                  title: {
+                      display: true,
+                      text: 'Quiz Attempt Time'
+                  }
+              },
+              y: {
+                  beginAtZero: true,
+                  title: {
+                      display: true,
+                      text: 'Score'
+                  }
+              }
+          },
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top'
+              },
+              title: {
+                  display: true,
+                  text: 'Quiz Performance Over Time'
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}

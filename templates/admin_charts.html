@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block extra_head %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<h2>Admin Dashboard: Detailed Statistics</h2>
+<div class="row">
+  <div class="col-md-8">
+    <canvas id="adminChart"></canvas>
+  </div>
+  <div class="col-md-4">
+    <ul class="list-group">
+      <li class="list-group-item">Total Subjects: {{ subject_count }}</li>
+      <li class="list-group-item">Total Chapters: {{ chapter_count }}</li>
+      <li class="list-group-item">Total Quizzes: {{ quiz_count }}</li>
+      <li class="list-group-item">Total Questions: {{ question_count }}</li>
+      <li class="list-group-item">Registered Users: {{ user_count }}</li>
+      <li class="list-group-item">Quiz Attempts: {{ score_count }}</li>
+    </ul>
+  </div>
+</div>
+<script>
+  var ctx = document.getElementById('adminChart').getContext('2d');
+  var adminChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: ['Subjects', 'Chapters', 'Quizzes', 'Questions', 'Users', 'Attempts'],
+          datasets: [{
+              label: 'Count',
+              data: [{{ subject_count }}, {{ chapter_count }}, {{ quiz_count }}, {{ question_count }}, {{ user_count }}, {{ score_count }}],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(255, 206, 86, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  'rgba(153, 102, 255, 0.6)',
+                  'rgba(255, 159, 64, 0.6)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: { beginAtZero: true }
+          }
+      }
+  });
+</script>
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+{% endblock %}

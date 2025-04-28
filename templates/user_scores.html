@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Quiz Scores</h2>
+{% if scores %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Quiz ID</th>
+        <th>Score</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for score in scores %}
+        <tr>
+          <td>{{ score.quiz_id }}</td>
+          <td>{{ score.total_scored }}</td>
+          <td>{{ score.time_stamp_of_attempt.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>You haven't taken any quizzes yet.</p>
+{% endif %}
+{% endblock %}

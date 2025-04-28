@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Your Profile</h2>
+<form method="POST" action="{{ url_for('edit_user_profile') }}">
+  <div class="form-group">
+    <label for="full_name">Full Name</label>
+    <input type="text" name="full_name" class="form-control" id="full_name" value="{{ user.full_name }}" required>
+  </div>
+  <div class="form-group">
+    <label for="username">Email/Username</label>
+    <input type="email" name="username" class="form-control" id="username" value="{{ user.username }}" required>
+  </div>
+  <div class="form-group">
+    <label for="qualification">Qualification</label>
+    <input type="text" name="qualification" class="form-control" id="qualification" value="{{ user.qualification }}">
+  </div>
+  <div class="form-group">
+    <label for="dob">Date of Birth</label>
+    <input type="date" name="dob" class="form-control" id="dob" value="{{ user.dob }}">
+  </div>
+  <button type="submit" class="btn btn-primary">Update Profile</button>
+</form>
+
+<form method="POST" action="{{ url_for('delete_user_profile') }}" onsubmit="return confirm('Are you sure you want to delete your profile? This action cannot be undone.');" class="mt-3">
+  <button type="submit" class="btn btn-danger">Delete My Profile</button>
+</form>
+{% endblock %}
